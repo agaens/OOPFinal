@@ -1,6 +1,8 @@
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+//base 
+
 public class Account {
 	
 	double balance;
