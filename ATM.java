@@ -90,7 +90,7 @@ public class ATM  {
 
 						boolean success = savings.withdraw(withdraw);
 						while(!success) {
-							System.out.println("Insufficient funds. Your balance is " + formatter.format(savings.getBalance()) + "\n");
+							System.err.println("Insufficient funds. Your balance is " + formatter.format(savings.getBalance()) + "\n");
 							withdraw = sc.nextDouble();
 							success = savings.withdraw(withdraw);
 						}
@@ -105,7 +105,7 @@ public class ATM  {
 						checking.withdraw(withdraw);
 						boolean success = checking.withdraw(withdraw);
 						while(!success) {
-							System.out.println("Insufficient funds. Your balance is " + formatter.format(checking.getBalance()) + "\n");
+							System.err.println("Insufficient funds. Your balance is " + formatter.format(checking.getBalance()) + "\n");
 							withdraw = sc.nextDouble();
 							success = checking.withdraw(withdraw);
 						}
@@ -126,7 +126,7 @@ public class ATM  {
 						boolean success = checking.transfer(savings, tranAmount);
 						
 						while(!success) {
-							System.out.println("Insufficient funds. Your balance is " + formatter.format(savings.getBalance()));
+							System.err.println("Insufficient funds. Your balance is " + formatter.format(savings.getBalance()));
 							tranAmount = sc.nextDouble();
 							success = savings.transfer(checking, tranAmount);
 						}
@@ -152,7 +152,7 @@ public class ATM  {
 						boolean success = checking.transfer(savings, tranAmount);
 						
 						while(!success) {
-							System.out.println("Insufficient funds. Your balance is " + formatter.format(checking.getBalance()));
+							System.err.println("Insufficient funds. Your balance is " + formatter.format(checking.getBalance()));
 							tranAmount = sc.nextDouble();
 							success = checking.transfer(savings, tranAmount);
 							
@@ -177,7 +177,7 @@ public class ATM  {
 					int inp = sc.nextInt();
 					double rate;
 					while(!(inp == 1 || inp == 2)) {
-						System.out.println("Invalid input \n");
+						System.err.println("Invalid input \n");
 						inp = sc.nextInt();
 					}
 					if(inp == 1) {
