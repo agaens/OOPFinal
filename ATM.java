@@ -1,20 +1,19 @@
 import java.text.NumberFormat;
 import java.util.Scanner;
 
-public class ATM extends Account {
+public class ATM  {
 
 
 	public static void main(String[] args) {
-		Account checking = new Account();
-		checking.setType("Checking");
-		checking.setBalance(0.00);
-		checking.setRate(0.00);
 
-		Account savings = new Account();
-		savings.setType("Savings");
-		savings.setBalance(0.00);
-		savings.setRate(1.5);
+		//Constructs accounts and sets their balance (see account.java)
 
+		Checking checking = new Checking();
+		checking.setBalance();
+		Savings savings = new Savings();
+		savings.setBalance();
+		
+		//formats numbers
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
 		Scanner sc = new Scanner(System.in);
 		boolean session = true;

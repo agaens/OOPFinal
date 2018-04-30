@@ -1,24 +1,26 @@
-
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Account {
 	
-
-	String type;
 	double balance;
 	double rate;
-
 	
-	void setType(String accType) {
-		type = accType;
+	public Account() {
+		
+
 	}
 
-	void setBalance(double accBal) {	
-		balance = accBal;
+
+	void setBalance() {	
+		//   random generate number from 100-1000
+		//   to simulate a real bank account interaction with user
+		
+		balance = ThreadLocalRandom.current().nextInt(100, 1001);
+		
+		System.out.println(balance + " balanace generated and set");
 	}
 
-	void setRate(double accRate) {		
-		rate = accRate;
-	}
 
 	void deposit(double dep) {		
 		balance += dep;
@@ -28,15 +30,9 @@ public class Account {
 		balance -= wit;
 	}
 
-	String getType() {	
-		return type;
-	}
-
 	double getBalance() {
 		return balance;
 	}
 
-	double getRate() {		
-		return rate;
-	}
+
 }
