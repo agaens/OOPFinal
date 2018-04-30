@@ -42,14 +42,25 @@ public class ATM  {
 							 + "========================\n"
 							 + "\nEnter selection: ");
 
-			int selection = sc.nextInt(); 
-			
-			while(selection < 1 || selection > 6) {
-				System.out.println("Invalid input, please put in a number from 1-6");
-				selection = sc.nextInt();
+			int input = 0;
+			boolean validate = false;
+			while(!validate) {
+				try {
+					input = sc.nextInt();
+					validate = true;
+				} catch (java.util.InputMismatchException e) {
+					System.out.println("Please put in a digit from 1-6 \n");	
+					sc.next();
+				}
+				
 			}
 			
-			switch (selection) {
+			while(input < 1 || input > 6) {
+				System.out.println("Invalid input, please put in a number from 1-6");
+				input = sc.nextInt();
+			}
+			
+			switch (input) {
 				case 1:
 					System.out.print("Enter (1) for Savings or (2) for Checking: ");
 					int depAccount = sc.nextInt();
@@ -187,6 +198,7 @@ public class ATM  {
 					}
 					System.out.println("Rate is " + rate);
 					break;
+					
 				case 6:
 					session = false;
 					break;

@@ -10,6 +10,12 @@ public class Account {
 		
 
 	}
+	
+	
+	//constructor overload for setting up account with non random balanceklj 
+	public Account(double balance) {
+		this.balance= balance;
+	}
 
 
 	void setBalance() {	
