@@ -1,8 +1,6 @@
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-//base 
-
 public class Account {
 	
 	double balance;
@@ -28,8 +26,13 @@ public class Account {
 		balance += dep;
 	}
 
-	void withdraw(double wit) {		
-		balance -= wit;
+	boolean withdraw(double wit) {	
+		if(wit > balance) {
+			return false;
+		} else {
+			balance -= wit;
+			return true;
+		}
 	}
 
 	double getBalance() {

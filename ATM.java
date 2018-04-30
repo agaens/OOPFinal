@@ -6,18 +6,29 @@ public class ATM  {
 
 	public static void main(String[] args) {
 
+		
+		//formats numbers
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		Scanner sc = new Scanner(System.in);
+		
+		//get name and id 
+		System.out.println("Enter name");
+		String name = sc.next();
+		System.out.println("Enter ID");
+		int id = sc.nextInt();
+		
+		System.out.println("Welcome " +  name + ".");
+		
+		//randomly decide what kind of user 
+		Student user = new Student(name,id);
+		
 		//Constructs accounts and sets their balance (see account.java)
-
 		Checking checking = new Checking();
 		checking.setBalance();
 		Savings savings = new Savings();
 		savings.setBalance();
 		
-		//formats numbers
-		NumberFormat formatter = NumberFormat.getCurrencyInstance();
-		Scanner sc = new Scanner(System.in);
 		boolean session = true;
-
 		while (session) {
 			System.out.print("========================\n"
 							 +"Welcome to the Bank! \n \n"
@@ -26,12 +37,18 @@ public class ATM  {
 							 + "2. Withdraw Money \n"
 							 + "3. Transfer Funds \n"
 							 + "4. Check Account Balance\n"
-							 + "5. End Session\n"
+							 + "5. Check Rate\n"
+							 + "6. End Session\n"
 							 + "========================\n"
 							 + "\nEnter selection: ");
 
 			int selection = sc.nextInt(); 
-
+			
+			while(selection < 1 || selection > 6) {
+				System.out.println("Invalid input, please put in a number from 1-6");
+				selection = sc.nextInt();
+			}
+			
 			switch (selection) {
 				case 1:
 					System.out.print("Enter (1) for Savings or (2) for Checking: ");
@@ -60,7 +77,7 @@ public class ATM  {
 					}
 					break;
 
-				case 2:
+				case 2: //Withdrawal 
 					System.out.print("\nEnter (1) for Savings or (2) for Checking: ");
 					int witAccount = sc.nextInt();
 
@@ -71,8 +88,12 @@ public class ATM  {
 						System.out.println("How much money would you like to withdraw?");
 						double withdraw = sc.nextDouble();
 
-						savings.withdraw(withdraw);
-
+						boolean success = savings.withdraw(withdraw);
+						while(!success) {
+							System.out.println("Insufficient funds. Your balance is " + formatter.format(savings.getBalance()) + "\n");
+							withdraw = sc.nextDouble();
+							success = savings.withdraw(withdraw);
+						}
 						System.out.println("\nYour Savings balance is now: " + formatter.format(savings.getBalance()) + "\n");
 					}
 					else if (witAccount == 2) {
@@ -81,8 +102,13 @@ public class ATM  {
 
 						System.out.println("How much money would you like to withdraw?");
 						double withdraw = sc.nextDouble();
-
 						checking.withdraw(withdraw);
+						boolean success = checking.withdraw(withdraw);
+						while(!success) {
+							System.out.println("Insufficient funds. Your balance is " + formatter.format(checking.getBalance()) + "\n");
+							withdraw = sc.nextDouble();
+							success = checking.withdraw(withdraw);
+						}
 
 						System.out.println("\nYour Checking balance is now: " + formatter.format(checking.getBalance()) + "\n");
 					}
@@ -96,10 +122,20 @@ public class ATM  {
 
 						System.out.print("How much money do you wish to transfer from Savings to Checking?: ");
 						double tranAmount = sc.nextDouble();
-
-						savings.withdraw(tranAmount);
-						checking.deposit(tranAmount);
-
+					
+						boolean success = checking.transfer(savings, tranAmount);
+						
+						while(!success) {
+							System.out.println("Insufficient funds. Your balance is " + formatter.format(savings.getBalance()));
+							tranAmount = sc.nextDouble();
+							success = savings.transfer(checking, tranAmount);
+						}
+						
+						if(success) {
+							System.out.println("\nYou successfully transferred " + formatter.format(tranAmount) + " from Checking to Savings");
+						}
+						
+	
 						System.out.println("\nYou successfully transferred " + formatter.format(tranAmount) + " from Savings to Checking");
 
 						System.out.println("\nChecking Balance: " + formatter.format(checking.getBalance()));
@@ -113,11 +149,19 @@ public class ATM  {
 						System.out.print("How much money do you wish to transfer from Checking to Saving?: ");
 						double tranAmount = sc.nextDouble();
 
-						checking.withdraw(tranAmount);
-						savings.deposit(tranAmount);
-
-						System.out.println("\nYou successfully transferred " + formatter.format(tranAmount) + " from Checking to Savings");
-
+						boolean success = checking.transfer(savings, tranAmount);
+						
+						while(!success) {
+							System.out.println("Insufficient funds. Your balance is " + formatter.format(checking.getBalance()));
+							tranAmount = sc.nextDouble();
+							success = checking.transfer(savings, tranAmount);
+							
+						}
+						
+						if(success) {
+							System.out.println("\nYou successfully transferred " + formatter.format(tranAmount) + " from Checking to Savings");
+						}
+						
 						System.out.println("\nChecking Balance: " + formatter.format(checking.getBalance()));
 						System.out.println("Savings Balance: " + formatter.format(savings.getBalance()) + "\n");
 				}
@@ -129,6 +173,21 @@ public class ATM  {
 					break;
 
 				case 5:
+					System.out.println("Enter 1 for Savings Rate, 2 for Checking Rate");
+					int inp = sc.nextInt();
+					double rate;
+					while(!(inp == 1 || inp == 2)) {
+						System.out.println("Invalid input \n");
+						inp = sc.nextInt();
+					}
+					if(inp == 1) {
+						rate = user.getSavingsRate();
+					} else {
+						rate= user.getCheckingRate();
+					}
+					System.out.println("Rate is " + rate);
+					break;
+				case 6:
 					session = false;
 					break;
 
@@ -137,7 +196,7 @@ public class ATM  {
 
 		}
 
-		System.out.println("\nThank you for banking with us, have a great day!\n");
+		System.out.println("\nThank you for banking with us, " + name + " have a great day!\n");
 
 	}
 }
